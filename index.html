@@ -14,7 +14,6 @@
         <nav>
             <a href="#thuc-trang">Thực Trạng</a>
             <a href="#trai-nghiem">Trợ Lý AI</a>
-            <a href="#backend-demo">Chấm Điểm Thi Đua</a>
         </nav>
     </header>
 
@@ -40,7 +39,7 @@
         </div>
     </section>
 
-    <!-- 4. Mục Trải nghiệm App AI PartyRock (Xử lý bằng JavaScript window.open() theo ý Khánh) -->
+    <!-- 4. Mục Trải nghiệm App AI PartyRock -->
     <section id="trai-nghiem" class="app-section">
         <h2>Trợ Lý AI Tiết Kiệm Điện & Thi Đua</h2>
         <p>Nhấp vào nút bên dưới để trải nghiệm ứng dụng AI tính toán lãng phí điện và điểm thi đua bị trừ của lớp bạn!</p>
@@ -57,117 +56,16 @@
         </div>
     </section>
 
-    <!-- 5. Mục Backend Web Logic: Chấm điểm thi đua & Lưu LocalStorage (Khoa & Nghĩa làm) -->
-    <section id="backend-demo" class="content-section" style="background: #ffffff; border-radius: 15px; margin: 40px auto; padding: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
-        <h2 style="color: #2e7d32;">📊 Báo Cáo & Chấm Điểm Thi Đua Nề Nếp Điện</h2>
-        <p style="margin-bottom: 20px;">Nhập thông tin vi phạm của lớp để hệ thống tự động ghi nhận và tính toán điểm trừ:</p>
-        
-        <form id="form-tiem-kiem" style="max-width: 500px; margin: 0 auto; text-align: left;">
-            <div style="margin-bottom: 15px;">
-                <label><b>Tên Chi Đoàn / Lớp:</b></label><br>
-                <input type="text" id="ten-lop" placeholder="Ví dụ: 10A1" required style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px;">
-            </div>
-            
-            <div style="margin-bottom: 15px;">
-                <label><b>Số điều hòa quên tắt:</b></label><br>
-                <input type="number" id="so-dieu-hoa" value="0" min="0" style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px;">
-            </div>
-
-            <div style="margin-bottom: 15px;">
-                <label><b>Số quạt/đèn quên tắt:</b></label><br>
-                <input type="number" id="so-quat" value="0" min="0" style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px;">
-            </div>
-
-            <button type="button" id="btn-luu" class="btn" style="border:none; width:100%; cursor:pointer; background-color: #2e7d32;">Lưu Báo Cáo & Tính Điểm</button>
-        </form>
-
-        <!-- Bảng hiển thị báo cáo lấy từ LocalStorage -->
-        <h3 style="margin-top: 40px; color: #1b5e20;">Bảng Tổng Hợp Vi Phạm (Dữ liệu lưu tại máy)</h3>
-        <table border="1" style="width: 100%; margin-top: 15px; border-collapse: collapse; text-align: center; border-color: #e0e0e0;">
-            <thead>
-                <tr style="background: #e8f5e9;">
-                    <th style="padding: 12px;">Lớp</th>
-                    <th style="padding: 12px;">Thiết Bị Quên Tắt</th>
-                    <th style="padding: 12px;">Điểm Thi Đua Trừ</th>
-                    <th style="padding: 12px;">Ước Tính Lãng Phí</th>
-                </tr>
-            </thead>
-            <tbody id="danh-sach-bao-cao">
-                <!-- JavaScript sẽ tự động chèn kết quả vào đây -->
-            </tbody>
-        </table>
-    </section>
-
-    <!-- 6. Chân trang (Footer) -->
+    <!-- 5. Chân trang (Footer) -->
     <footer>
         <p>© Dự án Ban IT - VDIT Gen 7 | Thực hiện bởi Team 1 THPT Việt Đức</p>
     </footer>
 
-    <!-- ĐOẠN MÃ JAVASCRIPT XỬ LÝ CHÍNH (BACKEND LOGIC) -->
+    <!-- ĐOẠN MÃ JAVASCRIPT XỬ LÝ NÚT MỞ APP -->
     <script>
-        // Task 1: Mở app PartyRock khi bấm nút (Theo giải pháp của Khánh dùng window.open)
         document.getElementById('btn-mo-app').addEventListener('click', function() {
             window.open('https://partyrock.aws/u/cop123/upxb44eM5/?fbclid=IwY2xjawUU6stwZG9mA2V4dG4DYWVtAjExAHNydGMGYXBwX2lkATAAAR5aOMkq-zSw56cSCtt1xOzzlWg8DlfcreYcKZVwBgaevgLLzHHyN_t841Gk1w_aem_g7VIpajKMmzWTv0EjM81tg', '_blank');
         });
-
-        // Task 2: Xử lý lưu form và đọc dữ liệu từ LocalStorage (Theo ghi chú mục 17 trong file excel)
-        document.getElementById('btn-luu').addEventListener('click', function() {
-            const tenLop = document.getElementById('ten-lop').value.trim();
-            const soDieuHoa = parseInt(document.getElementById('so-dieu-hoa').value) || 0;
-            const soQuat = parseInt(document.getElementById('so-quat').value) || 0;
-
-            if (!tenLop) {
-                alert('Vui lòng nhập tên lớp!');
-                return;
-            }
-
-            // Logic tính toán ngầm
-            const diemTru = (soDieuHoa * 5) + (soQuat * 2);
-            const tienLangPhi = (soDieuHoa * 4500) + (soQuat * 1000);
-
-            // Tạo đối tượng JSON
-            const baoCaoMoi = {
-                lop: tenLop,
-                viPham: `${soDieuHoa} điều hòa, ${soQuat} quạt/đèn`,
-                diemTru: `-${diemTru} điểm`,
-                tien: `${tienLangPhi.toLocaleString('vi-VN')} VNĐ`
-            };
-
-            // Lưu vào LocalStorage
-            let dsBaoCao = JSON.parse(localStorage.getItem('dsBaoCaoElec')) || [];
-            dsBaoCao.push(baoCaoMoi);
-            localStorage.setItem('dsBaoCaoElec', JSON.stringify(dsBaoCao));
-
-            // Cập nhật lại giao diện bảng
-            hienThiBaoCao();
-
-            // Reset ô nhập
-            document.getElementById('ten-lop').value = '';
-            document.getElementById('so-dieu-hoa').value = '0';
-            document.getElementById('so-quat').value = '0';
-        });
-
-        // Hàm load dữ liệu hiển thị ra bảng
-        function hienThiBaoCao() {
-            const tbody = document.getElementById('danh-sach-bao-cao');
-            tbody.innerHTML = '';
-            
-            let dsBaoCao = JSON.parse(localStorage.getItem('dsBaoCaoElec')) || [];
-
-            dsBaoCao.forEach(item => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td style="padding: 10px;"><b>${item.lop}</b></td>
-                    <td style="padding: 10px;">${item.viPham}</td>
-                    <td style="padding: 10px; color: #d32f2f; font-weight: bold;">${item.diemTru}</td>
-                    <td style="padding: 10px; color: #388e3c;">${item.tien}</td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        // Tự động nạp bảng khi mở lại web
-        window.onload = hienThiBaoCao;
     </script>
 </body>
 </html>
